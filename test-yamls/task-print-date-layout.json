@@ -1,0 +1,39 @@
+{
+    "_type": "print-date",
+    "steps": [
+        {
+            "_type": "print-date-unix-timestamp",
+            "pubkeys": null,
+            "expected_command": [
+                "script: #!/usr/bin/env bash\ndate +%s | tee $(results.current-date-unix-timestamp.path)\n"
+            ],
+            "threshold": 0,
+            "name": "print-date-unix-timestamp",
+            "expected_materials": [
+                [
+                    "image : bash:latest"
+                ]
+            ],
+            "expected_products": null
+        },
+        {
+            "_type": "print-date-human-readable",
+            "pubkeys": null,
+            "expected_command": [
+                "script: #!/usr/bin/env bash\ndate | tee $(results.current-date-human-readable.path)\n"
+            ],
+            "threshold": 0,
+            "name": "print-date-human-readable",
+            "expected_materials": [
+                [
+                    "image : bash:latest"
+                ]
+            ],
+            "expected_products": null
+        }
+    ],
+    "inspect": null,
+    "keys": null,
+    "expires": "",
+    "readme": ""
+}

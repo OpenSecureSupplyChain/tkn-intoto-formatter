@@ -1,0 +1,56 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-and-push
+  annotations:
+    description: |
+      A simple task that builds and publishes an image
+spec:
+  params:
+    # These may be overridden, but provide sensible defaults.
+    - name: directory
+      type: string
+      description: The directory containing the build context.
+      default: /workspace
+    - name: dockerfileName
+      type: string
+      description: The name of the Dockerfile
+      default: Dockerfile
+  resources:
+    inputs:
+      - name: workspace
+        type: git
+    outputs:
+      - name: builtImage
+        type: image
+  steps:
+    - name: dockerfile-build
+      image: gcr.io/cloud-builders/docker
+      workingDir: "$(params.directory)"
+      args:
+        [
+          "build",
+          "--no-cache",
+          "--tag",
+          "$(resources.outputs.image.url)",
+          "--file",
+          "$(params.dockerfileName)",
+          ".",
+        ]
+      volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+
+    - name: dockerfile-push
+      image: gcr.io/cloud-builders/docker
+      args: ["push", "$(resources.outputs.image.url)"]
+      volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+
+  # As an implementation detail, this Task mounts the host's daemon socket.
+  volumes:
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket

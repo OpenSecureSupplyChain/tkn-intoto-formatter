@@ -1,0 +1,39 @@
+{
+    "_type": "build-and-push",
+    "steps": [
+        {
+            "_type": "dockerfile-build",
+            "pubkeys": null,
+            "expected_command": [
+                "arguments : build --no-cache --tag $(resources.outputs.image.url) --file $(params.dockerfileName) ."
+            ],
+            "threshold": 0,
+            "name": "dockerfile-build",
+            "expected_materials": [
+                [
+                    "image : gcr.io/cloud-builders/docker"
+                ]
+            ],
+            "expected_products": null
+        },
+        {
+            "_type": "dockerfile-push",
+            "pubkeys": null,
+            "expected_command": [
+                "arguments : push $(resources.outputs.image.url)"
+            ],
+            "threshold": 0,
+            "name": "dockerfile-push",
+            "expected_materials": [
+                [
+                    "image : gcr.io/cloud-builders/docker"
+                ]
+            ],
+            "expected_products": null
+        }
+    ],
+    "inspect": null,
+    "keys": null,
+    "expires": "",
+    "readme": ""
+}
