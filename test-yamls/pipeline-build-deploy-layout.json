@@ -1,0 +1,107 @@
+{
+    "_type": "pipeline-with-parameters",
+    "steps": [
+        {
+            "_type": "pylint",
+            "pubkeys": null,
+            "expected_command": [],
+            "threshold": 0,
+            "name": "lint-repo",
+            "expected_materials": [
+                [
+                    "in-resource-name=workspace",
+                    "in-resource=my-repo",
+                    "in-resource-from="
+                ],
+                [],
+                []
+            ],
+            "expected_products": null
+        },
+        {
+            "_type": "make-test",
+            "pubkeys": null,
+            "expected_command": [],
+            "threshold": 0,
+            "name": "test-app",
+            "expected_materials": [
+                [
+                    "in-resource-name=workspace",
+                    "in-resource=my-repo",
+                    "in-resource-from="
+                ],
+                [],
+                []
+            ],
+            "expected_products": null
+        },
+        {
+            "_type": "kaniko-build-app",
+            "pubkeys": null,
+            "expected_command": [
+                "run-after=test-app"
+            ],
+            "threshold": 0,
+            "name": "build-app",
+            "expected_materials": [
+                [
+                    "in-resource-name=workspace",
+                    "in-resource=my-repo",
+                    "in-resource-from="
+                ],
+                [
+                    "out-resource-name=image",
+                    "out-resource=my-app-image"
+                ],
+                []
+            ],
+            "expected_products": null
+        },
+        {
+            "_type": "kaniko-build-frontend",
+            "pubkeys": null,
+            "expected_command": [
+                "run-after=test-app"
+            ],
+            "threshold": 0,
+            "name": "build-frontend",
+            "expected_materials": [
+                [
+                    "in-resource-name=workspace",
+                    "in-resource=my-repo",
+                    "in-resource-from="
+                ],
+                [
+                    "out-resource-name=image",
+                    "out-resource=my-frontend-image"
+                ],
+                []
+            ],
+            "expected_products": null
+        },
+        {
+            "_type": "deploy-kubectl",
+            "pubkeys": null,
+            "expected_command": [],
+            "threshold": 0,
+            "name": "deploy-all",
+            "expected_materials": [
+                [
+                    "in-resource-name=my-app-image",
+                    "in-resource=my-app-image",
+                    "in-resource-from=build-app",
+                    "in-resource-name=my-frontend-image",
+                    "in-resource=my-frontend-image",
+                    "in-resource-from=build-frontend"
+                ],
+                [],
+                []
+            ],
+            "expected_products": null
+        }
+    ],
+    "inspect": null,
+    "keys": null,
+    "expires": "",
+    "readme": ""
+}
