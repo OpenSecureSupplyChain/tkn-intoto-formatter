@@ -7,7 +7,7 @@ require (
 	cloud.google.com/go/monitoring v1.0.0 // indirect
 	cloud.google.com/go/trace v1.0.0 // indirect
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.5 // indirect
-	github.com/in-toto/in-toto-golang v0.3.2
+	github.com/in-toto/in-toto-golang v0.3.3
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
